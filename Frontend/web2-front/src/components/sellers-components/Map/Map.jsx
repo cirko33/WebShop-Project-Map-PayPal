@@ -14,7 +14,7 @@ const Map = () => {
   Geocode.setRegion("rs");
   const refresh = async () => {
     try {
-      const res = await sellerService.getMyOrders();
+      const res = await sellerService.getNewOrders();
       const setter = await Promise.all(
         res.map(async (e) => {
           const response = await Geocode.fromAddress(e.deliveryAddress);
