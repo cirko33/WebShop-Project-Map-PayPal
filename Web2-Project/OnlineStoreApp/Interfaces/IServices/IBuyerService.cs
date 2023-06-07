@@ -9,7 +9,7 @@ namespace OnlineStoreApp.Interfaces.IServices
 
         public Task CreateOrder(CreateOrderDTO createOrder, int userId);
         public Task CancelOrder(int userId, int id);
-
         public Task<List<OrderDTO>> GetMyOrders(int userId);
+        public Task<double> GetPrice(List<CreateItemDTO> items);
     }
 }

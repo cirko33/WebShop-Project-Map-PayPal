@@ -187,7 +187,6 @@ const Register = () => {
               name="imageFile"
               accept="image/jpg"
               onChange={(e) => {
-                console.log(e);
                 setData({ ...data, imageFile: e.target.files[0] });
               }}
             />

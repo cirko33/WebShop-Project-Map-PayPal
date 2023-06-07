@@ -19,8 +19,8 @@ namespace OnlineStoreApp.Settings
             builder.HasData(new Product
             {
                 Id = 1,
-                Name = "Test",
-                Price = 100,
+                Name = "Grapes",
+                Price = 1.20,
                 Amount = 10,
                 Description = "123",
                 SellerId = 2,

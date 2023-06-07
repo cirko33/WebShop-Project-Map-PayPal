@@ -21,7 +21,7 @@ namespace OnlineStoreApp.Settings
                 Id = 1,
                 ProductId = 1,
                 OrderId = 1,
-                Price = 100,
+                Price = 1.20,
                 Amount = 5,
                 Name = "Test"
             });

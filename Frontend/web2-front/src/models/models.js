@@ -28,7 +28,7 @@ export class EditProfileModel {
 
   export class SellerModel {
     constructor(obj) {
-     this.name = obj.name;
+     this.fullName = obj.fullName;
      this.email = obj.email;
    }
  }

@@ -21,7 +21,7 @@ namespace OnlineStoreApp.Services
                 Subject = subject,
                 Body = new TextPart(MimeKit.Text.TextFormat.Plain) { Text = body }
             };
-            message.From.Add(new MailboxAddress(_configuration["Mail:Name"], _configuration["Mail:Email"]));
+            message.From.Add(new MailboxAddress(_configuration["Mail:FullName"], _configuration["Mail:Email"]));
             message.To.Add(MailboxAddress.Parse(receiver));
 
             var client = new SmtpClient();

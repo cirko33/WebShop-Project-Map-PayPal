@@ -4,12 +4,15 @@ export const CartContext = createContext();
 
 export const CartContextProvider = ({ children }) => {
   const [cart, setCart] = useState();
+  const [data, setData] = useState({deliveryAddress: "", comment: ""});
 
   return (
     <CartContext.Provider
       value={{
         cart,
-        setCart
+        setCart,
+        data, 
+        setData
       }}
     >
       {children}

@@ -5,6 +5,7 @@ using OnlineStoreApp.Exceptions;
 using OnlineStoreApp.Interfaces;
 using OnlineStoreApp.Interfaces.IServices;
 using OnlineStoreApp.Models;
+using Org.BouncyCastle.Crypto;
 using System.Security.Cryptography.Xml;
 
 namespace OnlineStoreApp.Services
@@ -13,7 +14,7 @@ namespace OnlineStoreApp.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly double deliveryFee = 99;
+        private readonly double deliveryFee = 3.50;
 
         public BuyerService(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -108,6 +109,32 @@ namespace OnlineStoreApp.Services
         {
             var products = await _unitOfWork.Products.GetAll(null, null, new List<string> { "Seller" });
             return _mapper.Map<List<ProductDTO>>(products);
+        }
+
+        public async Task<double> GetPrice(List<CreateItemDTO> items)
+        {
+            double price = 0;
+            var ids = new List<int>();
+            foreach (var item in items)
+            {
+                var product = await _unitOfWork.Products.Get(x => x.Id == item.ProductId);
+                if (product == null)
+                    throw new BadRequestException("Invalid Product ID.");
+
+                if (item.Amount < 0)
+                    throw new BadRequestException($"Amount of {product.Name} can't be less than 0.");
+
+                if (item.Amount > product.Amount)
+                    throw new BadRequestException($"System doesn't have enough {product.Name}.");
+
+                price += product.Price * item.Amount;
+                if (!ids.Contains(product.SellerId))
+                {
+                    price += deliveryFee;
+                    ids.Add(product.SellerId);
+                }
+            }
+            return price;
         }
     }
 }

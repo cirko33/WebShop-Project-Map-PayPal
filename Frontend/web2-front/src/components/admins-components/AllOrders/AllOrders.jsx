@@ -6,7 +6,7 @@ const AllOrders = () => {
   const [orders, setOrders] = useState([]);
   
   useEffect(() => {
-    adminService.getOrders().then((res) => {setOrders(res); console.log(res)});
+    adminService.getOrders().then((res) => setOrders(res));
   }, []);
 
   return <Orders orders={orders} title={"All orders"} />;

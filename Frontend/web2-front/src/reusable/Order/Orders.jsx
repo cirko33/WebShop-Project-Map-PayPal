@@ -15,7 +15,6 @@ const Orders = ({ orders, title, updateOrders }) => {
   const delMinutes = 1000 * 60;
 
   useEffect(() => {
-    console.log(context.type());
     setInterval(() => {
       const temp = {};
       for (const key in countdowns) {
@@ -63,7 +62,7 @@ const Orders = ({ orders, title, updateOrders }) => {
               ))}
               <hr />
               <Typography>Comment: {o.comment}</Typography>
-              <Typography>Total: {o.orderPrice}</Typography>
+              <Typography>Total: {o.orderPrice}$</Typography>
             </CardContent>
             {context.type() === "Buyer" && canBeCancelled(o.orderTime) && (
               <CardActions>

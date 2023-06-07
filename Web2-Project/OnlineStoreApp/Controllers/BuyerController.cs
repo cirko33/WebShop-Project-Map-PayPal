@@ -58,5 +58,16 @@ namespace OnlineStoreApp.Controllers
             await _buyerService.CancelOrder(userId, id);
             return Ok();
         }
+
+            [Authorize(Roles = "Buyer")]
+            [HttpPost("price")]
+            public async Task<IActionResult> GetPrice(List<CreateItemDTO> items)
+            {
+                if (!int.TryParse(User.Claims.First(c => c.Type == "Id").Value, out int userId))
+                    throw new BadRequestException("Bad ID. Logout and login.");
+
+                double price = await _buyerService.GetPrice(items);
+                return Ok(price);
+            }
     }
 }

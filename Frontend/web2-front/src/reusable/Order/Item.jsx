@@ -10,7 +10,7 @@ const Item = ({ item }) => {
         </div>
         <div style={{ marginLeft: "auto" }}>
           <Typography sx={{ fontSize: 14, color: "lightblue" }}>No: {item.amount}</Typography>
-          <Typography sx={{ fontSize: 14, color: "lightblue" }}>Price: {item.price}</Typography>
+          <Typography sx={{ fontSize: 14, color: "lightblue" }}>Price: {item.price}$</Typography>
         </div>
       </div>
     </>

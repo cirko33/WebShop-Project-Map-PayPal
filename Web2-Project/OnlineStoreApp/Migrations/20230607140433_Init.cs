@@ -41,7 +41,7 @@ namespace OnlineStoreApp.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DeliveryAddress = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    OrderTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 5, 30, 14, 43, 9, 807, DateTimeKind.Local).AddTicks(692)),
+                    OrderTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 6, 7, 16, 4, 32, 513, DateTimeKind.Local).AddTicks(6075)),
                     DeliveryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     OrderPrice = table.Column<double>(type: "float", nullable: false),
@@ -111,25 +111,25 @@ namespace OnlineStoreApp.Migrations
                 columns: new[] { "Id", "Address", "Birthday", "Email", "FullName", "Image", "Password", "Type", "Username", "VerificationStatus" },
                 values: new object[,]
                 {
-                    { 1, "Admin 123", new DateTime(1978, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@luka.com", "Admin Admin", null, "$2a$11$Eg3bhCAUENNtHSxidNmW3en2IsHocsnLwqw6J4DVx6IDR02kufnwe", "Administrator", "admin", "Waiting" },
-                    { 2, "Seller 123", new DateTime(1978, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "luka.ciric2000@gmail.com", "Seller Seller", null, "$2a$11$WbkM.ijkpW.kvd4fgkTtRe/MTJxiqTLZqNWwRaIfmef4IeonU77vC", "Seller", "seller", "Waiting" },
-                    { 3, "Buyer 123", new DateTime(1978, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "buyer@luka.com", "Buyer Buyer", null, "$2a$11$W35YyxpraMFOcu5bx7Bu4OWN68NeHY7f.FDvuZRLsuKSr3eivlK0y", "Buyer", "buyer", "Waiting" }
+                    { 1, "Admin 123", new DateTime(1978, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@luka.com", "Admin Admin", null, "$2a$11$kNS/4Ydiv7qXXjgP8qRPaO2nXt6NIpiYXjIXzpHivxRMVTiBgSnd6", "Administrator", "admin", "Waiting" },
+                    { 2, "Seller 123", new DateTime(1978, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "luka.ciric2000@gmail.com", "Seller Seller", null, "$2a$11$J21rz7kw29rm0FyEwgk/v.nPEsudRSUuTRVyZyo7uMDvwJfeNWmXO", "Seller", "seller", "Waiting" },
+                    { 3, "Buyer 123", new DateTime(1978, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "buyer@luka.com", "Buyer Buyer", null, "$2a$11$flOPO2YQ0hVVdzsZNYdc2OxaqWixCreS6dy0htC8tZKfT2LI2Yfou", "Buyer", "buyer", "Waiting" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Orders",
                 columns: new[] { "Id", "Comment", "DeliveryAddress", "DeliveryTime", "OrderPrice", "UserId" },
-                values: new object[] { 1, null, "123", new DateTime(2023, 5, 30, 15, 56, 9, 807, DateTimeKind.Local).AddTicks(3884), 500.0, 3 });
+                values: new object[] { 1, null, "123", new DateTime(2023, 6, 7, 17, 12, 32, 514, DateTimeKind.Local).AddTicks(2094), 500.0, 3 });
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "Amount", "Description", "Image", "Name", "Price", "SellerId" },
-                values: new object[] { 1, 10, "123", null, "Test", 100.0, 2 });
+                values: new object[] { 1, 10, "123", null, "Grapes", 1.2, 2 });
 
             migrationBuilder.InsertData(
                 table: "Item",
                 columns: new[] { "Id", "Amount", "Name", "OrderId", "Price", "ProductId" },
-                values: new object[] { 1, 5, "Test", 1, 100.0, 1 });
+                values: new object[] { 1, 5, "Test", 1, 1.2, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Item_OrderId",

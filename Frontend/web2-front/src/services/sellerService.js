@@ -14,7 +14,7 @@ const getNewOrders = async () => {
 const getMyOrders = async () => {
   try {
     const res = await api.get("seller/orders");
-    return res.data ? res.data.map(o => new OrderModel(o)) : [];;
+    return res.data ? res.data.map(o => new OrderModel(o)) : [];
   } catch (e) {
     alert(e.response.data.Exception);
     return [];

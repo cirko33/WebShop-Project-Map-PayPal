@@ -21,6 +21,7 @@ const Dashboard = () => {
             <Link to="/products" className={classes.but}><Button variant="contained">Products</Button></Link>
             <Link to="/new-orders" className={classes.but}><Button variant="contained">New orders</Button></Link>
             <Link to="/my-orders" className={classes.but}><Button variant="contained">My orders</Button></Link>
+            <Link to="/map" className={classes.but}><Button variant="contained">Map</Button></Link>
           </>
         )}
         {context.type() === 'Buyer' && (

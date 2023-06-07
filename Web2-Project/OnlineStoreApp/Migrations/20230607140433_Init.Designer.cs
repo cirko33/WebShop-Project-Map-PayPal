@@ -12,7 +12,7 @@ using OnlineStoreApp.Settings;
 namespace OnlineStoreApp.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20230530124310_Init")]
+    [Migration("20230607140433_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -62,7 +62,7 @@ namespace OnlineStoreApp.Migrations
                             Amount = 5,
                             Name = "Test",
                             OrderId = 1,
-                            Price = 100.0,
+                            Price = 1.2,
                             ProductId = 1
                         });
                 });
@@ -98,7 +98,7 @@ namespace OnlineStoreApp.Migrations
                     b.Property<DateTime>("OrderTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 5, 30, 14, 43, 9, 807, DateTimeKind.Local).AddTicks(692));
+                        .HasDefaultValue(new DateTime(2023, 6, 7, 16, 4, 32, 513, DateTimeKind.Local).AddTicks(6075));
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -114,7 +114,7 @@ namespace OnlineStoreApp.Migrations
                         {
                             Id = 1,
                             DeliveryAddress = "123",
-                            DeliveryTime = new DateTime(2023, 5, 30, 15, 56, 9, 807, DateTimeKind.Local).AddTicks(3884),
+                            DeliveryTime = new DateTime(2023, 6, 7, 17, 12, 32, 514, DateTimeKind.Local).AddTicks(2094),
                             IsCancelled = false,
                             OrderPrice = 500.0,
                             OrderTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -164,8 +164,8 @@ namespace OnlineStoreApp.Migrations
                             Id = 1,
                             Amount = 10,
                             Description = "123",
-                            Name = "Test",
-                            Price = 100.0,
+                            Name = "Grapes",
+                            Price = 1.2,
                             SellerId = 2
                         });
                 });
@@ -235,7 +235,7 @@ namespace OnlineStoreApp.Migrations
                             Birthday = new DateTime(1978, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@luka.com",
                             FullName = "Admin Admin",
-                            Password = "$2a$11$Eg3bhCAUENNtHSxidNmW3en2IsHocsnLwqw6J4DVx6IDR02kufnwe",
+                            Password = "$2a$11$kNS/4Ydiv7qXXjgP8qRPaO2nXt6NIpiYXjIXzpHivxRMVTiBgSnd6",
                             Type = "Administrator",
                             Username = "admin",
                             VerificationStatus = "Waiting"
@@ -247,7 +247,7 @@ namespace OnlineStoreApp.Migrations
                             Birthday = new DateTime(1978, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "luka.ciric2000@gmail.com",
                             FullName = "Seller Seller",
-                            Password = "$2a$11$WbkM.ijkpW.kvd4fgkTtRe/MTJxiqTLZqNWwRaIfmef4IeonU77vC",
+                            Password = "$2a$11$J21rz7kw29rm0FyEwgk/v.nPEsudRSUuTRVyZyo7uMDvwJfeNWmXO",
                             Type = "Seller",
                             Username = "seller",
                             VerificationStatus = "Waiting"
@@ -259,7 +259,7 @@ namespace OnlineStoreApp.Migrations
                             Birthday = new DateTime(1978, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "buyer@luka.com",
                             FullName = "Buyer Buyer",
-                            Password = "$2a$11$W35YyxpraMFOcu5bx7Bu4OWN68NeHY7f.FDvuZRLsuKSr3eivlK0y",
+                            Password = "$2a$11$flOPO2YQ0hVVdzsZNYdc2OxaqWixCreS6dy0htC8tZKfT2LI2Yfou",
                             Type = "Buyer",
                             Username = "buyer",
                             VerificationStatus = "Waiting"

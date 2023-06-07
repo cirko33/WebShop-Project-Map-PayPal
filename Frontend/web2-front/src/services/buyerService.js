@@ -46,10 +46,22 @@ const postCancel = async(id) => {
     }
 }
 
+const getPrice = async(data) => {
+    try {
+        const res = await api.post('buyer/price', data);
+        return res.data;
+    }
+    catch(e) {        
+        alert(e.response.data.Exception);
+        return Promise.reject(e);
+    }
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
     getProducts,
     postOrder,
     getOrders,
-    postCancel
+    postCancel,
+    getPrice
 }

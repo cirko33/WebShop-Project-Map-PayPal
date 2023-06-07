@@ -59,9 +59,9 @@ const ProductsR = ({ products, updateProducts, title }) => {
               />
               <CardContent>
               {context.inType("Seller") && <Typography sx={{ fontSize: 14, flexWrap: "wrap" }}>Product ID: {p.id}</Typography> }
-              {context.inType("Buyer") && <Typography sx={{ fontSize: 14, flexWrap: "wrap" }}>Seller: {p.seller.name}</Typography>}
+              {context.inType("Buyer") && <Typography sx={{ fontSize: 14, flexWrap: "wrap" }}>Seller: {p.seller.fullName}</Typography>}
                 <Typography sx={{ fontSize: 14, flexWrap: "wrap" }}>Name: {p.name}</Typography>
-                <Typography sx={{ fontSize: 14, flexWrap: "wrap" }}>Price: {p.price}</Typography>
+                <Typography sx={{ fontSize: 14, flexWrap: "wrap" }}>Price: {p.price}$</Typography>
                 <Typography sx={{ fontSize: 14, flexWrap: "wrap" }}>Amount: {p.amount}</Typography>
                 <Typography sx={{ fontSize: 14, flexWrap: "wrap" }}>Description: {p.description}</Typography>
               </CardContent>
