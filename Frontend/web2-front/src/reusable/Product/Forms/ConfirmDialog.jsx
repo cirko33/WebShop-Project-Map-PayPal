@@ -1,10 +1,18 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useRef, useState } from "react";
 import { CartContext } from "../../../contexts/cart-context";
 import { useNavigate } from "react-router-dom";
 import classes from "./Forms.module.css";
+import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
 
 const ConfirmDialog = ({ open, setOpen, products }) => {
+  const [libraries] = useState(["places"]);
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_KEY,
+    libraries,
+    language: "en",
+  });
+  const ref = useRef();
   const { cart, data, setData } = useContext(CartContext);
   const navigate = useNavigate();
   const handleChange = (e) => {
@@ -27,10 +35,18 @@ const ConfirmDialog = ({ open, setOpen, products }) => {
         if (!sellers.find((it) => it === prod.sellerId)) sellers = [...sellers, prod.sellerId];
       }
     }
+
+    if (!isLoaded)
+      return (
+        <Dialog open={open} onClose={(e) => setOpen(false)} style={{ zIndex: 1 }}>
+          <div>Loading...</div>
+        </Dialog>
+      );
+
     return (
       <>
-        {temp.map((o) => (
-          <>
+        {temp.map((o, index) => (
+          <div key={index}>
             <div className={classes.wrap}>
               <div className={classes.wrapLeft}>Name: {o.name}</div>
               <div className={classes.wrapRight}>
@@ -39,30 +55,54 @@ const ConfirmDialog = ({ open, setOpen, products }) => {
               </div>
             </div>
             <hr />
-          </>
+          </div>
         ))}
-        <div style={{ color: "red", fontSize: 20 }}>Total: {total}$ </div>
+        <div style={{ color: "red", fontSize: 20 }}>Total: {total.toFixed(2)}$ </div>
         <div style={{ color: "red", fontSize: 20 }}>Delivery: {sellers.length * 3.5}$ </div>
       </>
     );
   };
 
+  const handleGoToPayment = async (e) => {
+    
+    if (!data.deliveryAddress || !data.positionX || !data.positionY) {
+      alert("Please enter address");
+      return;
+    }
+    navigate("/payment");
+  };
+
+  const handlePlaceChange = () => {
+    const address = ref.current.getPlace();
+    console.log("🚀 ~ file: ConfirmDialog.jsx:74 ~ handlePlaceChange ~ address:", address);
+    if (address && address.formatted_address) {
+      setData({
+        ...data,
+        deliveryAddress: address.formatted_address,
+        positionX: address.geometry.location.lat(),
+        positionY: address.geometry.location.lng(),
+      });
+    }
+  };
+
   return (
-    <Dialog open={open} onClose={(e) => setOpen(false)}>
+    <Dialog open={open} onClose={(e) => setOpen(false)} style={{ zIndex: 1 }}>
       <DialogTitle>Confirm your order</DialogTitle>
       <DialogContent>
         <div>{writeItems()}</div>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="deliveryAddress"
-          label="Address (leave blank if you want it to be your home address)"
-          type="text"
-          fullWidth
-          variant="standard"
-          value={data.deliveryAddress}
-          onChange={handleChange}
-        />
+        <Autocomplete onLoad={(cm) => (ref.current = cm)} onPlaceChanged={handlePlaceChange}>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="deliveryAddress"
+            label="Address"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={data.deliveryAddress}
+            onChange={handleChange}
+          />
+        </Autocomplete>
         <TextField
           autoFocus
           margin="dense"
@@ -79,7 +119,7 @@ const ConfirmDialog = ({ open, setOpen, products }) => {
         <Button color="error" onClick={(e) => setOpen(false)}>
           Cancel
         </Button>
-        <Button color="success" onClick={e => navigate("/payment")}>
+        <Button color="success" onClick={handleGoToPayment}>
           Go to payment
         </Button>
       </DialogActions>

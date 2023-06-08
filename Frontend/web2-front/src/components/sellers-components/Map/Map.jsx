@@ -1,28 +1,20 @@
 import { useEffect, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import L from "leaflet";
-import Geocode from "react-geocode";
 import sellerService from "../../../services/sellerService";
 import "leaflet/dist/leaflet.css";
+import { Button, Typography } from "@mui/material";
+import { dateTimeToString } from "../../../helpers/helpers";
+import Item from "../../../reusable/Order/Item";
 
 const Map = () => {
   const startPosition = [45.25472833688446, 19.83317432993583];
   const [orders, setOrders] = useState(null);
 
-  Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API);
-  Geocode.setLanguage("en");
-  Geocode.setRegion("rs");
   const refresh = async () => {
     try {
       const res = await sellerService.getNewOrders();
-      const setter = await Promise.all(
-        res.map(async (e) => {
-          const response = await Geocode.fromAddress(e.deliveryAddress);
-          const { lat, lng } = response.results[0].geometry.location;
-          return { ...e, position: [lat, lng] };
-        })
-      );
-      setOrders(setter);
+      setOrders(res);
     } catch (error) {
       console.error(error);
     }
@@ -38,20 +30,52 @@ const Map = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const status = (o) => {
+    return o.isCancelled
+      ? "Cancelled"
+      : !o.approved
+      ? "Waiting for approval"
+      : new Date(o.deliveryTime) > new Date()
+      ? "In delivery"
+      : "Delivered";
+  };
+
   return (
     <MapContainer center={startPosition} zoom={13} style={{ width: "95vw", height: "90vh" }} scrollWheelZoom={true}>
       <TileLayer url={process.env.REACT_APP_MAP_API} />
-      {
-       orders && orders.length !== 0 && console.log(orders)
-      }
-      {orders && orders.length !== 0 && orders.map((o, i) => (
-        <div key={i}>
-          {console.log(o)}
-          <Marker position={o.position} icon={icon}>
-            <Popup>{o.deliveryAddress}</Popup>
-          </Marker>
-        </div>
-      ))}
+      {orders &&
+        orders.length !== 0 &&
+        orders.map((o, i) => (
+          <div key={i}>
+            <Marker position={[o.positionX, o.positionY]} icon={icon}>
+              <Popup style={{ background: "black" }}>
+                <Typography>Ordered: {dateTimeToString(o.orderTime)}</Typography>
+                <Typography>Address: {o.deliveryAddress}</Typography>
+                <Typography>Status: {status(o)}</Typography>
+                <Typography sx={{ fontWeight: "bold", color: "lightblue" }}>Items:</Typography>
+                {o.items.map((item, index) => (
+                  <Item key={index} item={item} />
+                ))}
+                <hr />
+                <Typography>Comment: {o.comment}</Typography>
+                <Typography>Total: {o.orderPrice.toFixed(2)}$</Typography>
+                {!o.approved && (
+                  <>
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={(e) => {
+                        sellerService.postApprove(o.id).then((res) => refresh());
+                      }}
+                    >
+                      Approve
+                    </Button>
+                  </>
+                )}
+              </Popup>
+            </Marker>
+          </div>
+        ))}
     </MapContainer>
   );
 };

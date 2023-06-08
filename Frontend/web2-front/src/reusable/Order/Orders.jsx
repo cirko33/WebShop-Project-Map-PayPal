@@ -7,7 +7,13 @@ import buyerService from "../../services/buyerService";
 
 const Orders = ({ orders, title, updateOrders }) => {
   const status = (o) => {
-    return o.isCancelled ? "Cancelled" : new Date(o.deliveryTime) > new Date() ? "In delivery" : "Delivered";
+    return o.isCancelled
+      ? "Cancelled"
+      : !o.approved
+      ? "Waiting for approval"
+      : new Date(o.deliveryTime) > new Date()
+      ? "In delivery"
+      : "Delivered";
   };
   const context = useContext(AuthContext);
   const [countdowns, setCountdowns] = useState({});
@@ -45,7 +51,7 @@ const Orders = ({ orders, title, updateOrders }) => {
       {orders &&
         orders.length > 0 &&
         orders.map((o, index) => (
-          <Card key={index} sx={{ minWidth: 300, background: "gray", color: "white", marginTop:"10px" }}>
+          <Card key={index} sx={{ minWidth: 300, background: "gray", color: "white", marginTop: "10px" }}>
             {!countdowns[index] &&
               status(o) === "In delivery" &&
               setCountdowns({ ...countdowns, [index]: new Date(o.deliveryTime) - new Date() })}
@@ -62,11 +68,17 @@ const Orders = ({ orders, title, updateOrders }) => {
               ))}
               <hr />
               <Typography>Comment: {o.comment}</Typography>
-              <Typography>Total: {o.orderPrice}$</Typography>
+              <Typography>Total: {o.orderPrice.toFixed(2)}$</Typography>
             </CardContent>
             {context.type() === "Buyer" && canBeCancelled(o.orderTime) && (
               <CardActions>
-                <Button onClick={e => {buyerService.postCancel(o.id).then(res => updateOrders())}}>Cancel</Button>
+                <Button
+                  onClick={(e) => {
+                    buyerService.postCancel(o.id).then((res) => updateOrders());
+                  }}
+                >
+                  Cancel
+                </Button>
               </CardActions>
             )}
           </Card>

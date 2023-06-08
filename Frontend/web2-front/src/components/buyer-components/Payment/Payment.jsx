@@ -30,10 +30,11 @@ const Payment = () => {
   };
 
   const handleOrder = async () => {
-    const sendData = { ...data, items:[] };
+    const sendData = { ...data, items: [] };
     for (const i in cart) {
       if (cart[i] > 0) sendData.items.push({ productId: i, amount: cart[i] });
     }
+    console.log("🚀 ~ file: Payment.jsx:39 ~ handleOrder ~ sendData:", sendData);
     await buyerService.postOrder(sendData);
     setCart({});
     setData({});
@@ -45,19 +46,21 @@ const Payment = () => {
       handleOrder();
     });
   };
+
   return (
     <>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <div>
-          <Button variant="contained" color="primary" onClick={handleOrder}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleOrder}
+            style={{ marginBottom: "15px", width: "100%" }}
+          >
             Pay when arrives
           </Button>
           <PayPalScriptProvider options={{ "client-id": process.env.REACT_APP_PAYPAL_CLIENT_ID }}>
-            <PayPalButtons
-              createOrder={handlePayPal}
-              onApprove={handleApprove}
-              style={{ label: "pay", shape: "pill" }}
-            />
+            <PayPalButtons createOrder={handlePayPal} onApprove={handleApprove} style={{ label: "pay" }} />
           </PayPalScriptProvider>
         </div>
       </div>
