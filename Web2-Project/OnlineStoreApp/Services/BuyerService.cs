@@ -61,7 +61,7 @@ namespace OnlineStoreApp.Services
                 }
             }
 
-            order.DeliveryTime = DateTime.Now.AddHours(1).AddMinutes(new Random().Next(180));
+            order.DeliveryTime = DateTime.MaxValue;
             await _unitOfWork.Orders.Insert(order);
             await _unitOfWork.Save();
         }

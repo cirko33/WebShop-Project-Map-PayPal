@@ -8,6 +8,10 @@ namespace OnlineStoreApp.Models
         [Required, MaxLength(100)]
         public string? DeliveryAddress { get; set; }
         [Required]
+        public double? PositionX { get; set; }
+        [Required]
+        public double? PositionY { get; set; }
+        [Required]
         public DateTime OrderTime { get; set; }
         [Required]
         public DateTime DeliveryTime { get; set; }
@@ -19,5 +23,8 @@ namespace OnlineStoreApp.Models
         [Required]
         public int UserId { get; set; }
         public User? User { get; set; }
+
+        [Required]
+        public bool Approved { get; set; } = false;
     }
 }

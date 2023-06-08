@@ -42,7 +42,7 @@ namespace OnlineStoreApp.Settings
                 Address = "Seller 123",
                 Type = UserType.Seller,
                 Birthday = new DateTime(1978, 12, 11),
-                VerificationStatus = VerificationStatus.Waiting,
+                VerificationStatus = VerificationStatus.Accepted,
             },
             new User
             {
@@ -53,7 +53,7 @@ namespace OnlineStoreApp.Settings
                 Password = BCrypt.Net.BCrypt.HashPassword("123"),
                 Address = "Buyer 123",
                 Type = UserType.Buyer,
-                Birthday = new DateTime(1978, 12, 11)
+                Birthday = new DateTime(1978, 12, 11), 
             });
         }
     }

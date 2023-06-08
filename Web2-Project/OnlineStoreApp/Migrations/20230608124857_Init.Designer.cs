@@ -12,7 +12,7 @@ using OnlineStoreApp.Settings;
 namespace OnlineStoreApp.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20230607140433_Init")]
+    [Migration("20230608124857_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -75,6 +75,11 @@ namespace OnlineStoreApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Approved")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<string>("Comment")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -98,7 +103,15 @@ namespace OnlineStoreApp.Migrations
                     b.Property<DateTime>("OrderTime")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 6, 7, 16, 4, 32, 513, DateTimeKind.Local).AddTicks(6075));
+                        .HasDefaultValue(new DateTime(2023, 6, 8, 14, 48, 56, 10, DateTimeKind.Local).AddTicks(7880));
+
+                    b.Property<double?>("PositionX")
+                        .IsRequired()
+                        .HasColumnType("float");
+
+                    b.Property<double?>("PositionY")
+                        .IsRequired()
+                        .HasColumnType("float");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -113,11 +126,14 @@ namespace OnlineStoreApp.Migrations
                         new
                         {
                             Id = 1,
-                            DeliveryAddress = "123",
-                            DeliveryTime = new DateTime(2023, 6, 7, 17, 12, 32, 514, DateTimeKind.Local).AddTicks(2094),
+                            Approved = false,
+                            DeliveryAddress = "Dr Sime Milosevica 10, Novi Sad",
+                            DeliveryTime = new DateTime(2023, 6, 8, 17, 3, 56, 11, DateTimeKind.Local).AddTicks(4230),
                             IsCancelled = false,
-                            OrderPrice = 500.0,
+                            OrderPrice = 9.5,
                             OrderTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PositionX = 45.245005556420359,
+                            PositionY = 19.850283596223083,
                             UserId = 3
                         });
                 });
@@ -235,7 +251,7 @@ namespace OnlineStoreApp.Migrations
                             Birthday = new DateTime(1978, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admin@luka.com",
                             FullName = "Admin Admin",
-                            Password = "$2a$11$kNS/4Ydiv7qXXjgP8qRPaO2nXt6NIpiYXjIXzpHivxRMVTiBgSnd6",
+                            Password = "$2a$11$y3ljyt5D1ueyLUTYwF9kEurUtgwy6xeJQOtUcMuYz/1SdnU9gRfQG",
                             Type = "Administrator",
                             Username = "admin",
                             VerificationStatus = "Waiting"
@@ -247,10 +263,10 @@ namespace OnlineStoreApp.Migrations
                             Birthday = new DateTime(1978, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "luka.ciric2000@gmail.com",
                             FullName = "Seller Seller",
-                            Password = "$2a$11$J21rz7kw29rm0FyEwgk/v.nPEsudRSUuTRVyZyo7uMDvwJfeNWmXO",
+                            Password = "$2a$11$t0UdwHpeSSf8MSRvyuWHwOSQxxkYWimS/BjW/Cm91.vXZr4Mmud8u",
                             Type = "Seller",
                             Username = "seller",
-                            VerificationStatus = "Waiting"
+                            VerificationStatus = "Accepted"
                         },
                         new
                         {
@@ -259,7 +275,7 @@ namespace OnlineStoreApp.Migrations
                             Birthday = new DateTime(1978, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "buyer@luka.com",
                             FullName = "Buyer Buyer",
-                            Password = "$2a$11$flOPO2YQ0hVVdzsZNYdc2OxaqWixCreS6dy0htC8tZKfT2LI2Yfou",
+                            Password = "$2a$11$RC9NBxPPgOa9257z15IHBu2xu.MLtbln5PsYFQRgXwN/z1pWSc5Ju",
                             Type = "Buyer",
                             Username = "buyer",
                             VerificationStatus = "Waiting"

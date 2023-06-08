@@ -39,6 +39,21 @@ namespace OnlineStoreApp.Services
             await _unitOfWork.Save();
         }
 
+        public async Task Approve(int userId, int orderId)
+        {
+            var user = await _unitOfWork.Users.Get(x => x.Id == userId, new List<string> { "Products" }) ?? throw new UnauthorizedException("Error with id in token. Logout and login again");
+            var order = await _unitOfWork.Orders.Get(x => x.Id == orderId, new List<string> { "Items" });
+            if (order.Approved)
+                throw new BadRequestException("Already approved");
+            if(!order.Items!.Any(y => user.Products!.Select(x => x.Id).Contains(y.ProductId)))
+                throw new BadRequestException("No products are yours");
+
+            order.Approved = true;
+            order.DeliveryTime = DateTime.Now.AddMinutes(new Random().Next(180));
+            _unitOfWork.Orders.Update(order);
+            await _unitOfWork.Save();
+        }
+
         public async Task DeleteProduct(int id, int userId)
         {
             var user = await _unitOfWork.Users.Get(x => x.Id == userId, new List<string> { "Products" }) ?? throw new UnauthorizedException("Error with id in token. Logout and login again");
@@ -52,11 +67,14 @@ namespace OnlineStoreApp.Services
         public async Task<List<OrderDTO>> GetNewOrders(int userId)
         {
             var user = await _unitOfWork.Users.Get(x => x.Id == userId, new List<string> { "Products" }) ?? throw new UnauthorizedException("Error with id in token. Logout and login again");
-
             var orders = await _unitOfWork.Orders.GetAll(x => !x.IsCancelled && x.DeliveryTime > DateTime.Now, null, new List<string> { "Items" });
-            if(orders != null)
-                orders = orders.ToList().FindAll(x => x.Items!.Any(x => user.Products!.Select(x => x.Id).Contains(x.ProductId)) && !x.IsCancelled);
-                
+            var productIds = user.Products!.Select(x => x.Id);
+            if (orders != null)
+                orders = orders.ToList().FindAll(x => x.Items!.Any(x => productIds.Contains(x.ProductId)) && !x.IsCancelled);
+
+            foreach (var order in orders!)
+                order.Items = order.Items!.FindAll(x => productIds.Contains(x.ProductId));
+
             return _mapper.Map<List<OrderDTO>>(orders!.OrderByDescending(x => x.OrderTime));
         }
 
@@ -65,8 +83,12 @@ namespace OnlineStoreApp.Services
             var user = await _unitOfWork.Users.Get(x => x.Id == userId, new List<string> { "Products" }) ?? throw new UnauthorizedException("Error with id in token. Logout and login again");
 
             var orders = await _unitOfWork.Orders.GetAll(null, null, new List<string> { "Items" });
+            var productIds = user.Products!.Select(x => x.Id);
             if (orders != null)
-                orders = orders.ToList().FindAll(x => x.Items!.Any(x => user.Products!.Select(x => x.Id).Contains(x.ProductId)) && !x.IsCancelled);
+                orders = orders.ToList().FindAll(x => x.Items!.Any(x => productIds.Contains(x.ProductId)) && !x.IsCancelled);
+
+            foreach (var order in orders!)
+                order.Items = order.Items!.FindAll(x => productIds.Contains(x.ProductId));
 
             return _mapper.Map<List<OrderDTO>>(orders!.OrderByDescending(x => x.OrderTime));
         }

@@ -96,5 +96,16 @@ namespace OnlineStoreApp.Controllers
             await _sellerService.DeleteProduct(id, userId);
             return Ok();
         }
+
+        [Authorize(Roles = "Seller")]
+        [HttpPost("orders/approve/{id}")]
+        public async Task<IActionResult> ApproveOrder(int id)
+        {
+            if (!int.TryParse(User.Claims.First(c => c.Type == "Id").Value, out int userId))
+                throw new BadRequestException("Bad ID. Logout and login.");
+
+            await _sellerService.Approve(userId, id);
+            return Ok();
+        }
     }
 }

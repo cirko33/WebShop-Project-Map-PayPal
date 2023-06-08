@@ -41,12 +41,15 @@ namespace OnlineStoreApp.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DeliveryAddress = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    OrderTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 6, 7, 16, 4, 32, 513, DateTimeKind.Local).AddTicks(6075)),
+                    PositionX = table.Column<double>(type: "float", nullable: false),
+                    PositionY = table.Column<double>(type: "float", nullable: false),
+                    OrderTime = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 6, 8, 14, 48, 56, 10, DateTimeKind.Local).AddTicks(7880)),
                     DeliveryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     OrderPrice = table.Column<double>(type: "float", nullable: false),
                     IsCancelled = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Approved = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -111,15 +114,15 @@ namespace OnlineStoreApp.Migrations
                 columns: new[] { "Id", "Address", "Birthday", "Email", "FullName", "Image", "Password", "Type", "Username", "VerificationStatus" },
                 values: new object[,]
                 {
-                    { 1, "Admin 123", new DateTime(1978, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@luka.com", "Admin Admin", null, "$2a$11$kNS/4Ydiv7qXXjgP8qRPaO2nXt6NIpiYXjIXzpHivxRMVTiBgSnd6", "Administrator", "admin", "Waiting" },
-                    { 2, "Seller 123", new DateTime(1978, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "luka.ciric2000@gmail.com", "Seller Seller", null, "$2a$11$J21rz7kw29rm0FyEwgk/v.nPEsudRSUuTRVyZyo7uMDvwJfeNWmXO", "Seller", "seller", "Waiting" },
-                    { 3, "Buyer 123", new DateTime(1978, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "buyer@luka.com", "Buyer Buyer", null, "$2a$11$flOPO2YQ0hVVdzsZNYdc2OxaqWixCreS6dy0htC8tZKfT2LI2Yfou", "Buyer", "buyer", "Waiting" }
+                    { 1, "Admin 123", new DateTime(1978, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "admin@luka.com", "Admin Admin", null, "$2a$11$y3ljyt5D1ueyLUTYwF9kEurUtgwy6xeJQOtUcMuYz/1SdnU9gRfQG", "Administrator", "admin", "Waiting" },
+                    { 2, "Seller 123", new DateTime(1978, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "luka.ciric2000@gmail.com", "Seller Seller", null, "$2a$11$t0UdwHpeSSf8MSRvyuWHwOSQxxkYWimS/BjW/Cm91.vXZr4Mmud8u", "Seller", "seller", "Accepted" },
+                    { 3, "Buyer 123", new DateTime(1978, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "buyer@luka.com", "Buyer Buyer", null, "$2a$11$RC9NBxPPgOa9257z15IHBu2xu.MLtbln5PsYFQRgXwN/z1pWSc5Ju", "Buyer", "buyer", "Waiting" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Orders",
-                columns: new[] { "Id", "Comment", "DeliveryAddress", "DeliveryTime", "OrderPrice", "UserId" },
-                values: new object[] { 1, null, "123", new DateTime(2023, 6, 7, 17, 12, 32, 514, DateTimeKind.Local).AddTicks(2094), 500.0, 3 });
+                columns: new[] { "Id", "Comment", "DeliveryAddress", "DeliveryTime", "OrderPrice", "PositionX", "PositionY", "UserId" },
+                values: new object[] { 1, null, "Dr Sime Milosevica 10, Novi Sad", new DateTime(2023, 6, 8, 17, 3, 56, 11, DateTimeKind.Local).AddTicks(4230), 9.5, 45.245005556420359, 19.850283596223083, 3 });
 
             migrationBuilder.InsertData(
                 table: "Products",

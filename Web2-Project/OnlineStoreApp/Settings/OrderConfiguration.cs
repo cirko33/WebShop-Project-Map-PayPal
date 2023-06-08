@@ -16,16 +16,21 @@ namespace OnlineStoreApp.Settings
             builder.Property(x => x.Comment).HasMaxLength(200);
             builder.Property(x => x.IsCancelled).IsRequired().HasDefaultValue(false);
             builder.Property(x => x.OrderPrice).IsRequired();
+            builder.Property(x => x.Approved).IsRequired().HasDefaultValue(false);
+            builder.Property(x => x.PositionX).IsRequired();
+            builder.Property(x => x.PositionY).IsRequired();
             builder.HasOne(x => x.User).WithMany(x => x.Orders).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
 
             builder.HasData(new Order
             {
                 Id = 1,
-                DeliveryAddress = "123",
+                DeliveryAddress = "Dr Sime Milosevica 10, Novi Sad",
                 DeliveryTime = DateTime.Now.AddMinutes(new Random().Next(180)),
                 IsCancelled = false,
                 UserId = 3,
-                OrderPrice = 500
+                OrderPrice = 9.5,
+                PositionX = 45.24500555642036,
+                PositionY = 19.850283596223083
             }); 
         }
     }
