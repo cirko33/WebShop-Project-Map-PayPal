@@ -66,6 +66,9 @@ export class EditProfileModel {
       this.deliveryTime = obj.deliveryTime;
       this.isCancelled = obj.isCancelled;
       this.orderPrice = obj.orderPrice;
+      this.positionX = obj.positionX;
+      this.positionY = obj.positionY;
+      this.approved = obj.approved;
       this.items = obj.items.map((o) => new ItemModel(o));
     }
   }
