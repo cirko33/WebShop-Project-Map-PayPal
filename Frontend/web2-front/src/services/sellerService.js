@@ -61,6 +61,17 @@ const postProduct = async (data) => {
   }
 };
 
+const postApprove = async (id) => {
+  try {
+    await api.post("seller/orders/approve/" + id);
+    return true;
+  } catch (e) {
+    alert(e.response.data.Exception);
+    return false;
+  }
+};
+
+
 const deleteProduct = async (id) => {
   try {
    await api.delete("seller/products/" + id);
@@ -80,4 +91,5 @@ export default {
   putProduct,
   postProduct,
   deleteProduct,
+  postApprove,
 }
