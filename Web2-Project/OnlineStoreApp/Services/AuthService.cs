@@ -123,7 +123,16 @@ namespace OnlineStoreApp.Services
 
             var user = _mapper.Map<User>(registerDTO);
             user.VerificationStatus = user.Type == UserType.Seller ? VerificationStatus.Waiting : VerificationStatus.Accepted;
-            
+
+            if (registerDTO.ImageFile != null)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    registerDTO.ImageFile.CopyTo(ms);
+                    user.Image = ms.ToArray();
+                }
+            }
+
             if (user.Type == UserType.Seller)
                 await _mailService.SendEmail("Account verification", "Sorry to keep you waiting, the first available administrator will verify your account.", user.Email!);
             await _unitOfWork.Users.Insert(user);
